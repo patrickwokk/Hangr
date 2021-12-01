@@ -1,39 +1,21 @@
 import 'dart:convert';
+import 'package:geolocator/geolocator.dart';
 import 'package:hangr/models/models.dart';
 import 'package:http/http.dart' as http;
-import 'package:location/location.dart';
+
+
 
 class DataService {
-  Location location = new Location();
-  bool _serviceEnabled;
-  PermissionStatus _permissionGranted;
-  LocationData _locationData;
 
-  Future<void> locationServiceAccess() async {
-  _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        return;
-      }
-    }
-  }
-  Future<void> locationPermissionAccess() async {
-  _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        return;
-      }
-    }
-  }
-
-  Future<WeatherResponse> getWeather(String city) async {
-    _locationData = await location.getLocation();
+  
+  Future<WeatherResponse> getWeather(String lat, String lon) async {
     // api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
+    // api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&appid={API key}
 
     final queryParameters = {
-      'q': city,
+      // 'q': city,
+      'lat': lat,
+      'lon': lon,
       'appid': '01e57d239145a9dce9b0786a3599314d',
       'units': 'metric'
     };
