@@ -3,6 +3,11 @@ import 'package:hangr/models/models.dart';
 import 'package:hangr/services/data_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:dot_navigation_bar/dot_navigation_bar.dart';
+import 'package:hangr/views/camera.dart';
+import 'package:hangr/views/home.dart';
+import 'package:hangr/views/profile.dart';
+import 'package:hangr/views/add.dart';
+import 'package:hangr/views/search.dart';
 
 class Homepage extends StatelessWidget {
 
@@ -21,132 +26,81 @@ class homepage extends StatefulWidget {
 }
 
 class _homepageState extends State<homepage> {
-  final _dataService = DataService();
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-  Position _currentPosition;
-  String _currentAddress;
 
-  WeatherResponse _response;
+  int _selectedIndex = 0;
 
-  var _selectedTab = _SelectedTab.home;
+  static const List<Widget> _widgetOptions = <Widget>[
+    Home(),
+    Search(),
+    AddPicture(),
+    Profile(),
+  ];
 
-  void _handleIndexChanged(int i) {
+  void _onItemTapped(int index) {
     setState(() {
-      _selectedTab = _SelectedTab.values[i];
+      _selectedIndex = index;
     });
-  }
-
-
-  //handle fetching weather
-  void _search() async {
-    final response = await _dataService.getWeather(_currentPosition.latitude.toString(), _currentPosition.longitude.toString());
-    setState(() => _response = response);
   }
 
   @override
   void initState() {  
     super.initState();
-    _getCurrentLocation();
-    _search();
   }
-
-    //get current location
-    _getCurrentLocation() {
-    geolocator
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-        .then((Position position) {
-      setState(() {
-        _currentPosition = position;
-      });
-      _getAddressFromLatLng();
-    }).catchError((e) {
-      print(e);
-    });
-  }
-
-  //get current address 
-  _getAddressFromLatLng() async {
-  try {
-    List<Placemark> p = await geolocator.placemarkFromCoordinates(
-        _currentPosition.latitude, _currentPosition.longitude);
-    Placemark place = p[0];
-    setState(() {
-      _currentAddress =
-      "${place.locality}, ${place.postalCode}";
-    });
-  } catch (e) {
-    print(e);
-  }
-}
 
   //UI
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Scaffold(
+    return Scaffold(
         // backgroundColor: Colors.transparent,
         body: SafeArea(
           child: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (_response != null)
-              Column(
-                children: [
-                  Image.network(_response.iconUrl),
-                  Text(
-                    /*_response.tempInfo.temperature.isNegative?
-                    '${_response.tempInfo.temperature.floor()}°'
-                    :*/'${_response.tempInfo.temperature.ceil()}°',
-                    style: TextStyle(fontSize: 40),
-                  ),
-                  Text(_response.weatherInfo.description),
-                  
-
-                  if (_currentAddress != null)
-                    Text(_currentAddress),
-                ],
-              ),
-
-            ElevatedButton(onPressed: _search, child: Text('Fetch Weather'))
-          ],
-        ),
+            child: _widgetOptions.elementAt(_selectedIndex)
+            //to make bottom save route (not used)
+            // IndexedStack(
+            //   children: const <Widget>[
+            //     Home(),
+            //     Camera(),
+            //     AddPicture(),
+            //     Profile(),
+            //   ],
+            //   index: _selectedIndex,
+            // ),
           ),
         ),
       bottomNavigationBar:  DotNavigationBar(
-          currentIndex: _SelectedTab.values.indexOf(_selectedTab),
-          onTap: _handleIndexChanged,
+          // backgroundColor: Colors.black,
+          unselectedItemColor: Colors.grey[400],
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
           // dotIndicatorColor: Colors.black,
           items: [
             /// Home
             DotNavigationBarItem(
               icon: Icon(Icons.home),
-              selectedColor: Colors.purple,
+              selectedColor: Colors.amber,
             ),
 
             /// Picture
             DotNavigationBarItem(
-              icon: Icon(Icons.camera_alt_rounded),
-              selectedColor: Colors.pink,
+              icon: Icon(Icons.search),
+              selectedColor: Colors.amber,
+
             ),
 
             /// Closet
             DotNavigationBarItem(
-              icon: Icon(Icons.search),
-              selectedColor: Colors.orange,
+              icon: Icon(Icons.add_circle_rounded),
+              selectedColor: Colors.amber,
             ),
 
             /// Profile ONLY
             DotNavigationBarItem(
               icon: Icon(Icons.person),
-              selectedColor: Colors.teal,
+              selectedColor: Colors.amber,
             ),
             
           ],
         ),
-      ),
     );
   }
 }
-
-enum _SelectedTab { home, camera, search, profile }
