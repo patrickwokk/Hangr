@@ -66,13 +66,18 @@ class _AddPictureState extends State<AddPicture> {
           children: <Widget>[
             SizedBox(height: size.height * 0.08),      
             image != null 
-            ? Image.file(image, width: 160, height: 160, fit: BoxFit.cover,) 
-            : Container(
-              width: 160,
-              height: 160,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/png/imageplaceholder.png'),
+            ? ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: Image.file(image, width: 160, height: 160, fit: BoxFit.cover,)) 
+            : ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: Container(
+                width: 160,
+                height: 160,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/png/imageplaceholder.png'),
+                  ),
                 ),
               ),
             ),
@@ -198,7 +203,7 @@ class _AddPictureState extends State<AddPicture> {
                     onPrimary: Colors.white, // foreground
                     shape: const RoundedRectangleBorder(
                         borderRadius:
-                        BorderRadius.all(Radius.circular(29)))),
+                        BorderRadius.all(Radius.circular(8)))),
                 onPressed: () {
                   _sharedPref();
                   Navigator.pushNamed(context, '/homepage');

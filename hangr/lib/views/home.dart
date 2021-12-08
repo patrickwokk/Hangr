@@ -247,7 +247,7 @@ class _HomeState extends State<Home> {
                   onPrimary: Colors.white, // foreground
                   shape: const RoundedRectangleBorder(
                       borderRadius:
-                      BorderRadius.all(Radius.circular(29)))),
+                      BorderRadius.all(Radius.circular(8)))),
               onPressed: () {
                 _search();
               },
