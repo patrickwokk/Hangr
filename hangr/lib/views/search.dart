@@ -51,6 +51,7 @@ class _SearchState extends State<Search> {
           crossAxisSpacing: 0,
           mainAxisSpacing: 0,
           crossAxisCount: 3,
+          childAspectRatio: 0.75,
           // childAspectRatio: 0.5,
         ),
         itemCount: _items.length,

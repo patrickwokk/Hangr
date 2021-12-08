@@ -32,8 +32,8 @@ class _HomeState extends State<Home> {
     final response = await _dataService.getWeather(_currentPosition.latitude.toString(), _currentPosition.longitude.toString());
     setState(() { 
       _response = response;
-      double temperature = _response.tempInfo.temperature;
-      if( temperature <= 10){
+      double temperature = _response.tempInfo.temperature.toDouble();
+      if( temperature <= 10.99){
         _season = "Winter";
       }
       else if (11<= temperature && temperature <=15){
@@ -101,86 +101,166 @@ class _HomeState extends State<Home> {
     Size size = MediaQuery.of(context).size;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+
         if (_response != null)
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.network(_response.iconUrl),
-              Text(
-                /*_response.tempInfo.temperature.isNegative?
-                '${_response.tempInfo.temperature.floor()}°'
-                :*/'${_response.tempInfo.temperature.ceil()}°',
-                style: TextStyle(fontSize: 40),
-              ),
-              Text(_response.weatherInfo.description),
-              
-              if (_currentAddress != null)
-                Text(_currentAddress),
-            ],
-        ),
-        SizedBox(height: 10,),
-        Container(
-          height: 199,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: _items.length,
-            itemBuilder: (context,index){
-              if(_items[index].season == _season){
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PictureDetails(
-                            imagePath: _items[index].imagePath, 
-                            name: _items[index].name, 
-                            category:_items[index].category, 
-                            season: _items[index].season,),
+              SizedBox(height: size.height * 0.09),
+              Center(
+                child: Container(
+                  height: 120,
+                  width: size.width * 0.86,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Color(0xFFF5F5F5),
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Color(0x10000000),
+                          blurRadius: 10,
+                          spreadRadius: 4,
+                          offset: Offset(0.0, 8.0)),
+                    ],
+                  ),
+                  child: Stack(
+                    children: <Widget>[
+                      Positioned(
+                        left: 12,
+                        top: 15,
+                        child: Image.network(_response.iconUrl),
                       ),
-                    );
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(right: 10),
-                    height: 100,
-                    width: 150,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(28),
-                      // color: Colors.amber,
-                    ),
-                    child: Image.file(File(_items[index].imagePath)),
-                              ),
-                );
-              }
-              else {
-                return null;
-              }
-            }),
-        ),
-        SizedBox(height: 10,),
-        SizedBox(
-          width: size.width * 0.3,
-          height: size.height * 0.0657,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                elevation: 0,
-                splashFactory: NoSplash.splashFactory,
-                primary: Colors.amber, // background
-                onPrimary: Colors.white, // foreground
-                shape: const RoundedRectangleBorder(
-                    borderRadius:
-                    BorderRadius.all(Radius.circular(29)))),
-            onPressed: () {
-              _search();
-            },
-            child: const Text(
-                "Refresh",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w600,
+
+                      Positioned(
+                        left: 108,
+                        top: 40,
+                        child: Text(
+                          /*_response.tempInfo.temperature.isNegative?
+                          '${_response.tempInfo.temperature.floor()}°'
+                          :*/'${_response.tempInfo.temperature.ceil()}°',
+                          style: TextStyle(fontSize: 43),
+                        ),
+                      ),
+
+                      Positioned(
+                        right: 15,
+                        top: 24,
+                        child: Text(
+                          _response.weatherInfo.description,
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                      ),
+
+                      Positioned(
+                        right: 125,
+                        top: 76,
+                        child: Image.asset(
+                          "assets/png/placeholder.png",
+                          height: 20,
+                          width: 20,
+                        ),
+                      ),
+
+                      Positioned(
+                        right: 14,
+                        top: 80,
+                        child: _currentAddress == null
+                        ?Text("Location Unkown")
+                        :Text(_currentAddress,
+                        style: TextStyle(
+                              fontSize: 11,
+                            )
+                        ),
+                      ),
+
+                    ],
+                  ),
                 ),
               ),
-            ),
+              const SizedBox(height: 20,),
+              const Padding(
+                padding: EdgeInsets.only(left: 30,bottom: 20, top: 10),
+                child: Text(
+                  "Top picks for you",
+                  style: TextStyle(
+                    color: Colors.amber,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+        ),
+        
+        Padding(
+          padding: const EdgeInsets.only(left: 29,),
+          child: SizedBox(
+            height: 250,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: _items.length,
+              itemBuilder: (context,index){
+                if(_items[index].season == _season){
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PictureDetails(
+                              imagePath: _items[index].imagePath, 
+                              name: _items[index].name, 
+                              category:_items[index].category, 
+                              season: _items[index].season,),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      // color: Colors.amber,
+                      margin: const EdgeInsets.only(right: 11),
+                      height: 200,
+                      width: 190,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: Image.file(File(_items[index].imagePath,))),
+                    ),
+                  );
+                }
+                else {
+                  return SizedBox.shrink();
+                }
+              }),
+          ),
+        ),
+        SizedBox(height: 35,),
+        Center(
+          child: SizedBox(
+            width: size.width * 0.3,
+            height: size.height * 0.0657,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  splashFactory: NoSplash.splashFactory,
+                  primary: Colors.amber, // background
+                  onPrimary: Colors.white, // foreground
+                  shape: const RoundedRectangleBorder(
+                      borderRadius:
+                      BorderRadius.all(Radius.circular(29)))),
+              onPressed: () {
+                _search();
+              },
+              child: const Text(
+                  "Refresh",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+          ),
         ),
       ],
     );

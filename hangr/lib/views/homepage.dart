@@ -51,56 +51,57 @@ class _homepageState extends State<homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // backgroundColor: Colors.transparent,
-        body: SafeArea(
-          child: Center(
-            child: _widgetOptions.elementAt(_selectedIndex)
-            //to make bottom save route (not used)
-            // IndexedStack(
-            //   children: const <Widget>[
-            //     Home(),
-            //     Camera(),
-            //     AddPicture(),
-            //     Profile(),
-            //   ],
-            //   index: _selectedIndex,
-            // ),
-          ),
-        ),
+      // extendBodyBehindAppBar: false,
+      extendBody: true,
+      // backgroundColor: Colors.transparent,
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex)
+        //to make bottom save route (not used)
+        // IndexedStack(
+        //   children: const <Widget>[
+        //     Home(),
+        //     Camera(),
+        //     AddPicture(),
+        //     Profile(),
+        //   ],
+        //   index: _selectedIndex,
+        // ),
+      ),
       bottomNavigationBar:  DotNavigationBar(
-          // backgroundColor: Colors.black,
-          unselectedItemColor: Colors.grey[400],
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-          // dotIndicatorColor: Colors.black,
-          items: [
-            /// Home
-            DotNavigationBarItem(
-              icon: Icon(Icons.home),
-              selectedColor: Colors.amber,
-            ),
+        // backgroundColor: Colors.black,
+        // enableFloatingNavBar: true,
+        unselectedItemColor: Colors.grey[400],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        // dotIndicatorColor: Colors.black,
+        items: [
+          /// Home
+          DotNavigationBarItem(
+            icon: Icon(Icons.home),
+            selectedColor: Colors.amber,
+          ),
 
-            /// Picture
-            DotNavigationBarItem(
-              icon: Icon(Icons.search),
-              selectedColor: Colors.amber,
+          /// Picture
+          DotNavigationBarItem(
+            icon: Icon(Icons.search),
+            selectedColor: Colors.amber,
 
-            ),
+          ),
 
-            /// Closet
-            DotNavigationBarItem(
-              icon: Icon(Icons.add_circle_rounded),
-              selectedColor: Colors.amber,
-            ),
+          /// Closet
+          DotNavigationBarItem(
+            icon: Icon(Icons.add_circle_rounded),
+            selectedColor: Colors.amber,
+          ),
 
-            /// Profile ONLY
-            DotNavigationBarItem(
-              icon: Icon(Icons.person),
-              selectedColor: Colors.amber,
-            ),
-            
-          ],
-        ),
+          /// Profile ONLY
+          DotNavigationBarItem(
+            icon: Icon(Icons.person),
+            selectedColor: Colors.amber,
+          ),
+          
+        ],
+      ),
     );
   }
 }

@@ -64,6 +64,7 @@ class _AddPictureState extends State<AddPicture> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            SizedBox(height: size.height * 0.08),      
             image != null 
             ? Image.file(image, width: 160, height: 160, fit: BoxFit.cover,) 
             : Container(
@@ -76,95 +77,65 @@ class _AddPictureState extends State<AddPicture> {
               ),
             ),
             TextButton(
-                onPressed: () {
-                   _showPicker(context);
-                   nameController.clear();
-                  },
-                child: const Text("Add Image",
-                  style: TextStyle(
-                      // color: kWhiteColor,
-                      fontSize: 14,
-                      // fontFamily: 'SF',
-                      fontWeight: FontWeight.w700
-                    ),
+              onPressed: () {
+                  _showPicker(context);
+                  nameController.clear();
+                },
+              child: const Text("Add Image",
+                style: TextStyle(
+                    color: Colors.amber,
+                    fontSize: 14,
+                    // fontFamily: 'SF',
+                    fontWeight: FontWeight.w700
                   ),
                 ),
+              ),
       
-                Container(
-                  padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: const [
-                        BoxShadow(
-                            color: Color(0x10000000),
-                            blurRadius: 10,
-                            spreadRadius: 4,
-                            offset: Offset(0.0, 8.0)),
-                            // color: Color.fromRGBO(17, 111, 255, 0.2),
-                            // blurRadius: 20.0,
-                            // offset: Offset(0, 10))
-                      ]),
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                              border: Border(
-                                  bottom:
-                                      BorderSide(color: Colors.grey.shade100))),
-                          child: TextField(
-                            controller: nameController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "Name",
-                              hintStyle: TextStyle(
-                                color: Colors.grey[400],
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                      ),
-              
-                      //------------------------------------------------------
-                      //Category
-                      //------------------------------------------------------
-                      Container(
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Color(0x10000000),
+                          blurRadius: 10,
+                          spreadRadius: 4,
+                          offset: Offset(0.0, 8.0)),
+                          // color: Color.fromRGBO(17, 111, 255, 0.2),
+                          // blurRadius: 20.0,
+                          // offset: Offset(0, 10))
+                    ]),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
                         padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
                             border: Border(
                                 bottom:
                                     BorderSide(color: Colors.grey.shade100))),
-                        child: DropdownButton<String>(
-                            value: dropdownCategoryValue,
-                            icon: const Icon(Icons.arrow_downward_outlined),
-                            iconSize: 24,
-                            elevation: 16,
-                            underline: Container(
-                              height: 2,
+                        child: TextField(
+                          controller: nameController,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Name",
+                            hintStyle: TextStyle(
+                              color: Colors.grey[400],
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
                             ),
-                            onChanged: (String newValue) {
-                              setState(() {
-                                dropdownCategoryValue = newValue;
-                                print(dropdownCategoryValue);
-                              });
-                            },
-                            items: <String>['Accessories', 'Outer', 'Shirts', 'Pants', 'Shoes']
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          )
-                      ),
-
+                          ),
+                        ),
+                    ),
+          
                     //------------------------------------------------------
-                    //Season
+                    //Category
                     //------------------------------------------------------
-                     DropdownButton<String>(
-                        value: dropdownSeasonValue,
+                    DropdownButton<String>(
+                        value: dropdownCategoryValue,
                         icon: const Icon(Icons.arrow_downward_outlined),
                         iconSize: 24,
                         elevation: 16,
@@ -173,48 +144,75 @@ class _AddPictureState extends State<AddPicture> {
                         ),
                         onChanged: (String newValue) {
                           setState(() {
-                            dropdownSeasonValue = newValue;
-                            print(dropdownSeasonValue);
+                            dropdownCategoryValue = newValue;
+                            print(dropdownCategoryValue);
                           });
                         },
-                        items: <String>['Spring', 'Summer', 'Fall', 'Winter']
+                        items: <String>['Accessories', 'Outer', 'Shirts', 'Pants', 'Shoes']
                             .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),
                           );
                         }).toList(),
-                      )
-                    ],
+                      ),
+
+                  //------------------------------------------------------
+                  //Season
+                  //------------------------------------------------------
+                    DropdownButton<String>(
+                      value: dropdownSeasonValue,
+                      icon: const Icon(Icons.arrow_downward_outlined),
+                      iconSize: 24,
+                      elevation: 16,
+                      underline: Container(
+                        height: 2,
+                      ),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          dropdownSeasonValue = newValue;
+                          print(dropdownSeasonValue);
+                        });
+                      },
+                      items: <String>['Spring', 'Summer', 'Fall', 'Winter']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: size.height * 0.04),
+            SizedBox(
+              width: size.width * 0.4,
+              height: size.height * 0.07,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    splashFactory: NoSplash.splashFactory,
+                    primary: Colors.amber, // background
+                    onPrimary: Colors.white, // foreground
+                    shape: const RoundedRectangleBorder(
+                        borderRadius:
+                        BorderRadius.all(Radius.circular(29)))),
+                onPressed: () {
+                  _sharedPref();
+                  Navigator.pushNamed(context, '/homepage');
+                },
+                child: const Text(
+                    "Add",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
-                SizedBox(height: size.height * 0.04),
-                SizedBox(
-                  width: size.width * 0.85,
-                  height: size.height * 0.0657,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        splashFactory: NoSplash.splashFactory,
-                        primary: Colors.amber, // background
-                        onPrimary: Colors.white, // foreground
-                        shape: const RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(29)))),
-                    onPressed: () {
-                      _sharedPref();
-                      Navigator.pushNamed(context, '/homepage');
-                    },
-                    child: const Text(
-                        "Add",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                ),
+            ),
           ],
           
         ),

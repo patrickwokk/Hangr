@@ -42,7 +42,7 @@ class PictureDetails extends StatelessWidget {
             margin: const EdgeInsets.all(20.0),
             child: Center(
               child: Text(
-                season,
+                season + " Collection",
                 
               ),
             ),

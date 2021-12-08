@@ -28,40 +28,43 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisSpacing: 0,
-          mainAxisSpacing: 0,
-          crossAxisCount: 3,
-          // childAspectRatio: 0.5,
+      body: SizedBox(
+        child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisSpacing: 0,
+            mainAxisSpacing: 0,
+            crossAxisCount: 3,
+            childAspectRatio: 0.75,
+            // childAspectRatio: 0.5,
+          ),
+          itemCount: _items.length,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PictureDetails(
+                        imagePath: _items[index].imagePath, 
+                        name: _items[index].name, 
+                        category:_items[index].category, 
+                        season: _items[index].season,),
+                  ),
+                );
+              },
+              child: Container(
+                child: Image.file(File(_items[index].imagePath)),
+               // decoration: BoxDecoration(
+                 // image: DecorationImage(
+                   // fit: BoxFit.cover,
+                    //image: Image.file(new File(_items[index].imagePath))
+                   // image: AssetImage(_items[index].imagePath),
+                 // ),
+                //),
+              ),
+            );
+          },
         ),
-        itemCount: _items.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PictureDetails(
-                      imagePath: _items[index].imagePath, 
-                      name: _items[index].name, 
-                      category:_items[index].category, 
-                      season: _items[index].season,),
-                ),
-              );
-            },
-            child: Container(
-              child: Image.file(File(_items[index].imagePath)),
-             // decoration: BoxDecoration(
-               // image: DecorationImage(
-                 // fit: BoxFit.cover,
-                  //image: Image.file(new File(_items[index].imagePath))
-                 // image: AssetImage(_items[index].imagePath),
-               // ),
-              //),
-            ),
-          );
-        },
       ),
     );
   }

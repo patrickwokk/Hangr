@@ -32,19 +32,33 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
             ),
               SizedBox(height: size.height * 0.2),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/homepage');
-                  },
-                child: const Text("Continue",
-                  style: TextStyle(
-                      // color: kWhiteColor,
-                      fontSize: 14,
-                      // fontFamily: 'SF',
-                      fontWeight: FontWeight.w700
+              Center(
+                child: SizedBox(
+                  width: size.width * 0.3,
+                  height: size.height * 0.0657,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        splashFactory: NoSplash.splashFactory,
+                        primary: Colors.amber, // background
+                        onPrimary: Colors.white, // foreground
+                        shape: const RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(8)))),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/homepage');
+                    },
+                    child: const Text(
+                        "Continue",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
-                  ),
                 ),
+              ),
             ],
           ),
         ),
